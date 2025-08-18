@@ -4,4 +4,5 @@ plugins {
 }
 
 rootProject.name = "hibernate-odm"
-include("lib")
+include("odm-core")
+include("odm-testing")
