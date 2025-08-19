@@ -1,4 +1,4 @@
-package org.hibernate.odm.jdbc.adapter
+package org.hibernate.odm.jdbc
 
 import java.sql.Blob
 import java.sql.CallableStatement
@@ -16,7 +16,7 @@ import java.sql.Struct
 import java.util.Properties
 import java.util.concurrent.Executor
 
-interface ConnectionAdapter : Connection, WrapperAdapter {
+sealed interface ConnectionAdapter : Connection, WrapperAdapter {
     override fun createStatement(): Statement {
         throw SQLFeatureNotSupportedException()
     }

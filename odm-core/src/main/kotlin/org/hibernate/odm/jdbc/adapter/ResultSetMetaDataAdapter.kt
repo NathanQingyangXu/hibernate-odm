@@ -1,9 +1,9 @@
-package org.hibernate.odm.jdbc.adapter
+package org.hibernate.odm.jdbc
 
 import java.sql.ResultSetMetaData
 import java.sql.SQLFeatureNotSupportedException
 
-interface ResultSetMetaDataAdapter : ResultSetMetaData, WrapperAdapter {
+sealed interface ResultSetMetaDataAdapter : ResultSetMetaData, WrapperAdapter {
     override fun getColumnCount(): Int {
         throw SQLFeatureNotSupportedException()
     }

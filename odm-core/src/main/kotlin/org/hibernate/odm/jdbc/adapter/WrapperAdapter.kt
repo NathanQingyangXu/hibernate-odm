@@ -1,9 +1,9 @@
-package org.hibernate.odm.jdbc.adapter
+package org.hibernate.odm.jdbc
 
 import java.sql.SQLFeatureNotSupportedException
 import java.sql.Wrapper
 
-interface WrapperAdapter : Wrapper {
+sealed interface WrapperAdapter : Wrapper {
     override fun <T : Any> unwrap(iface: Class<T>): T {
         throw SQLFeatureNotSupportedException()
     }

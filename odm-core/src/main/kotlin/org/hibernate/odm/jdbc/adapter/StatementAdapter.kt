@@ -1,4 +1,4 @@
-package org.hibernate.odm.jdbc.adapter
+package org.hibernate.odm.jdbc
 
 import java.sql.Connection
 import java.sql.ResultSet
@@ -6,7 +6,7 @@ import java.sql.SQLFeatureNotSupportedException
 import java.sql.SQLWarning
 import java.sql.Statement
 
-interface StatementAdapter : Statement, WrapperAdapter {
+sealed interface StatementAdapter : Statement, WrapperAdapter {
     override fun executeQuery(sql: String): ResultSet {
         throw SQLFeatureNotSupportedException()
     }

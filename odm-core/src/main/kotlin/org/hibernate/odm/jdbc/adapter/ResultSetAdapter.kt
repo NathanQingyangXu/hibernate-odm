@@ -1,4 +1,4 @@
-package org.hibernate.odm.jdbc.adapter
+package org.hibernate.odm.jdbc
 
 import java.io.InputStream
 import java.io.Reader
@@ -21,7 +21,7 @@ import java.sql.Time
 import java.sql.Timestamp
 import java.util.Calendar
 
-interface ResultSetAdapter : ResultSet, WrapperAdapter{
+sealed interface ResultSetAdapter : ResultSet, WrapperAdapter {
     override fun next(): Boolean {
         throw SQLFeatureNotSupportedException()
     }

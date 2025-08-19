@@ -1,4 +1,4 @@
-package org.hibernate.odm.jdbc.adapter
+package org.hibernate.odm.jdbc
 
 import java.io.InputStream
 import java.io.Reader
@@ -20,7 +20,7 @@ import java.sql.Time
 import java.sql.Timestamp
 import java.util.Calendar
 
-interface PreparedStatementAdapter : PreparedStatement, StatementAdapter {
+sealed interface PreparedStatementAdapter : PreparedStatement, StatementAdapter {
     override fun executeQuery(): ResultSet {
         throw SQLFeatureNotSupportedException()
     }

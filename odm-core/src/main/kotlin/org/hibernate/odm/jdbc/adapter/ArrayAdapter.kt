@@ -1,10 +1,10 @@
-package org.hibernate.odm.jdbc.adapter
+package org.hibernate.odm.jdbc
 
 import java.sql.Array
 import java.sql.ResultSet
 import java.sql.SQLFeatureNotSupportedException
 
-interface ArrayAdapter : Array {
+sealed interface ArrayAdapter : Array {
     override fun getBaseTypeName(): String {
         throw SQLFeatureNotSupportedException()
     }
