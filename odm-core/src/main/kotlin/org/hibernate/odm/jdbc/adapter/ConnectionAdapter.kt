@@ -73,7 +73,7 @@ interface ConnectionAdapter : Connection, WrapperAdapter {
         throw SQLFeatureNotSupportedException()
     }
 
-    override fun getCatalog(): String {
+    override fun getCatalog(): String? {
         throw SQLFeatureNotSupportedException()
     }
 
@@ -85,7 +85,7 @@ interface ConnectionAdapter : Connection, WrapperAdapter {
         throw SQLFeatureNotSupportedException()
     }
 
-    override fun getWarnings(): SQLWarning {
+    override fun getWarnings(): SQLWarning? {
         throw SQLFeatureNotSupportedException()
     }
 
@@ -231,7 +231,7 @@ interface ConnectionAdapter : Connection, WrapperAdapter {
         throw SQLFeatureNotSupportedException()
     }
 
-    override fun getSchema(): String {
+    override fun getSchema(): String? {
         throw SQLFeatureNotSupportedException()
     }
 

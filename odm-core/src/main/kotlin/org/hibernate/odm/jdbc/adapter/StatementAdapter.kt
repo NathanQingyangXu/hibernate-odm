@@ -51,7 +51,7 @@ interface StatementAdapter : Statement, WrapperAdapter {
         throw SQLFeatureNotSupportedException()
     }
 
-    override fun getWarnings(): SQLWarning {
+    override fun getWarnings(): SQLWarning? {
         throw SQLFeatureNotSupportedException()
     }
 
@@ -67,7 +67,7 @@ interface StatementAdapter : Statement, WrapperAdapter {
         throw SQLFeatureNotSupportedException()
     }
 
-    override fun getResultSet(): ResultSet {
+    override fun getResultSet(): ResultSet? {
         throw SQLFeatureNotSupportedException()
     }
 
