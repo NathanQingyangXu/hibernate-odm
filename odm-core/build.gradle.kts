@@ -15,6 +15,9 @@ dependencies {
 
     api(libs.hibernate.orm.core)
     api(libs.mongodb.driver.sync)
+    implementation(libs.sl4j.api)
+    implementation(libs.logback.classic)
+    implementation(libs.kotlin.logging)
 }
 
 java {

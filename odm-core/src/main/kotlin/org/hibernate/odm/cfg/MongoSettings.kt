@@ -1,5 +1,7 @@
 package org.hibernate.odm.cfg
 
-enum class MongoSettings {
-    MONGODB_URI
+class MongoSettings {
+    companion object {
+        const val MONGODB_URI = "mongodb.uri"
+    }
 }
