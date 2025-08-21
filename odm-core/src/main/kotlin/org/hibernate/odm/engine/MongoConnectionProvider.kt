@@ -26,7 +26,8 @@ class MongoConnectionProvider : ConnectionProvider, Configurable, Startable, Sto
 
     private val clientSettingsBuilder = MongoClientSettings.builder()
 
-    private var mongoClient: MongoClient? = null
+    var mongoClient: MongoClient? = null
+
     private var mongoDatabase: MongoDatabase? = null
     private var mongoDatabaseName: String? = null
 
