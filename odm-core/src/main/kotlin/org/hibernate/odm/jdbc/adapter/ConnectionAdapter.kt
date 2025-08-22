@@ -49,14 +49,6 @@ sealed interface ConnectionAdapter : Connection, WrapperAdapter {
         throw SQLFeatureNotSupportedException()
     }
 
-    override fun close() {
-        throw SQLFeatureNotSupportedException()
-    }
-
-    override fun isClosed(): Boolean {
-        throw SQLFeatureNotSupportedException()
-    }
-
     override fun getMetaData(): DatabaseMetaData {
         throw SQLFeatureNotSupportedException()
     }

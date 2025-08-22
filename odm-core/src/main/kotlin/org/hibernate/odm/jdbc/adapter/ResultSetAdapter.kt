@@ -26,10 +26,6 @@ sealed interface ResultSetAdapter : ResultSet, WrapperAdapter {
         throw SQLFeatureNotSupportedException()
     }
 
-    override fun close() {
-        throw SQLFeatureNotSupportedException()
-    }
-
     override fun wasNull(): Boolean {
         throw SQLFeatureNotSupportedException()
     }
@@ -605,10 +601,6 @@ sealed interface ResultSetAdapter : ResultSet, WrapperAdapter {
     }
 
     override fun getHoldability(): Int {
-        throw SQLFeatureNotSupportedException()
-    }
-
-    override fun isClosed(): Boolean {
         throw SQLFeatureNotSupportedException()
     }
 

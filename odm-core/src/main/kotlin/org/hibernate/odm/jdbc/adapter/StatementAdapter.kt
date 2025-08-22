@@ -15,10 +15,6 @@ sealed interface StatementAdapter : Statement, WrapperAdapter {
         throw SQLFeatureNotSupportedException()
     }
 
-    override fun close() {
-        throw SQLFeatureNotSupportedException()
-    }
-
     override fun getMaxFieldSize(): Int {
         throw SQLFeatureNotSupportedException()
     }
@@ -152,10 +148,6 @@ sealed interface StatementAdapter : Statement, WrapperAdapter {
     }
 
     override fun getResultSetHoldability(): Int {
-        throw SQLFeatureNotSupportedException()
-    }
-
-    override fun isClosed(): Boolean {
         throw SQLFeatureNotSupportedException()
     }
 
