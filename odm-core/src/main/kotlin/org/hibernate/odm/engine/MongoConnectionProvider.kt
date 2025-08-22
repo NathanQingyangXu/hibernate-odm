@@ -8,7 +8,7 @@ import com.mongodb.client.MongoDatabase
 import io.github.oshai.kotlinlogging.KotlinLogging
 import org.hibernate.HibernateException
 import org.hibernate.engine.jdbc.connections.spi.ConnectionProvider
-import org.hibernate.odm.cfg.MongoSettings.Companion.MONGODB_URI
+import org.hibernate.odm.cfg.MongoSettings.MONGODB_URI
 import org.hibernate.odm.service.MongoClientConfigurator
 import org.hibernate.service.UnknownServiceException
 import org.hibernate.service.spi.Configurable

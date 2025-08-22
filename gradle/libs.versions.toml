@@ -5,6 +5,8 @@ junit-jupiter-engine = "5.13.4"
 slf4j-api = "2.0.17"
 logback-classic = "1.5.18"
 kotlin-logging = "7.0.13"
+kotlin-jvm = "2.2.0"
+detekt = "1.23.8"
 
 [libraries]
 hibernate-orm-core = { module = "org.hibernate.orm:hibernate-core", version.ref = "hibernate-orm-core" }
@@ -15,4 +17,5 @@ logback-classic = { module = "ch.qos.logback:logback-classic", version.ref = "lo
 kotlin-logging = { module = "io.github.oshai:kotlin-logging-jvm", version.ref = "kotlin-logging" }
 
 [plugins]
-kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version = "2.2.0" }
+kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin-jvm" }
+detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
