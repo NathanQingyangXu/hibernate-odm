@@ -26,14 +26,15 @@ class MongoConnectionProvider : ConnectionProvider, Configurable, Startable, Sto
 
     private val clientSettingsBuilder = MongoClientSettings.builder()
 
-    var mongoClient: MongoClient? = null
+    internal var mongoClient: MongoClient? = null
 
-    private var mongoDatabase: MongoDatabase? = null
     private var mongoDatabaseName: String? = null
 
-    override fun getConnection(): Connection {
-        TODO("Not yet implemented")
-    }
+    private var mongoDatabase: MongoDatabase? = null
+
+    override fun getConnection(): Connection = MongoConnection(
+        client = checkNotNull(mongoClient), database = checkNotNull(mongoDatabase)
+    )
 
     override fun closeConnection(conn: Connection) {
         conn.close()
@@ -65,10 +66,9 @@ class MongoConnectionProvider : ConnectionProvider, Configurable, Startable, Sto
     }
 
     override fun start() {
-        mongoClient = MongoClients.create(clientSettingsBuilder.build())
-            .also {
-                mongoDatabase = it.getDatabase(checkNotNull(mongoDatabaseName))
-            }
+        mongoClient = MongoClients.create(clientSettingsBuilder.build()).also {
+            mongoDatabase = it.getDatabase(checkNotNull(mongoDatabaseName))
+        }
     }
 
     override fun stop() {

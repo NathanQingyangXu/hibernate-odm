@@ -1,4 +1,4 @@
-package org.hibernate.odm.engine
+package org.hibernate.odm.jdbc
 
 import com.mongodb.client.internal.MongoClientImpl
 import org.hibernate.HibernateException
@@ -9,7 +9,6 @@ import org.hibernate.engine.jdbc.connections.spi.ConnectionProvider
 import org.hibernate.internal.SessionFactoryImpl
 import org.hibernate.odm.cfg.MongoSettings
 import org.hibernate.odm.dialect.MongoDialect
-import org.hibernate.odm.jdbc.MongoConnectionProvider
 import org.hibernate.odm.service.MongoClientConfigurator
 import org.hibernate.service.spi.ServiceException
 import org.junit.jupiter.api.assertDoesNotThrow

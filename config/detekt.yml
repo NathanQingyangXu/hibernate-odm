@@ -5,7 +5,7 @@ config:
 
 complexity:
   TooManyFunctions:
-    excludes: ['**/jdbc/adapter/**']
+    excludes: ['**/jdbc/**']
 
 naming:
   InvalidPackageDeclaration:

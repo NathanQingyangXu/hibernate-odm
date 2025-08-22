@@ -16,6 +16,20 @@ import java.sql.Struct
 import java.util.Properties
 import java.util.concurrent.Executor
 
+/**
+ * Adapter interface of [Connection] so its implementation class only needs to override API methods
+ * that are really needed (those methods Hibernate ORM ever used).
+ *
+ * The following two API methods of [Connection] are not overridden to avoid conflict with [AbstractCloseable]:
+ *  * [close()][Connection.close]
+ *  * [isClosed()][Connection.isClosed]
+ *
+ * Its implementation class (or [MongoConnection]) is supposed to inherit [AbstractCloseable]
+ * to enjoy the common code logic.
+ *
+ * @see MongoConnection
+ * @see AbstractCloseable
+ */
 sealed interface ConnectionAdapter : Connection, WrapperAdapter {
     override fun createStatement(): Statement {
         throw SQLFeatureNotSupportedException()
