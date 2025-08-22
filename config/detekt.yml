@@ -1,0 +1,12 @@
+config:
+  validation: true
+  warningsAsErrors: false
+  excludes: ''
+
+complexity:
+  TooManyFunctions:
+    excludes: ['**/jdbc/adapter/**']
+
+naming:
+  InvalidPackageDeclaration:
+    excludes: ['**/jdbc/adapter/**']

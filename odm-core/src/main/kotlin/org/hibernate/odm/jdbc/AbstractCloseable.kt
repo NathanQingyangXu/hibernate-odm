@@ -5,6 +5,7 @@ internal abstract class AbstractCloseable {
 
     fun isClosed() = closed
 
+    @Suppress("all")
     fun close() {
         if (!closed) {
             try {

@@ -1,4 +1,4 @@
-package org.hibernate.odm.engine
+package org.hibernate.odm.jdbc
 
 import com.mongodb.ConnectionString
 import com.mongodb.MongoClientSettings
@@ -8,7 +8,7 @@ import com.mongodb.client.MongoDatabase
 import io.github.oshai.kotlinlogging.KotlinLogging
 import org.hibernate.HibernateException
 import org.hibernate.engine.jdbc.connections.spi.ConnectionProvider
-import org.hibernate.odm.cfg.MongoSettings.MONGODB_URI
+import org.hibernate.odm.cfg.MongoSettings
 import org.hibernate.odm.service.MongoClientConfigurator
 import org.hibernate.service.UnknownServiceException
 import org.hibernate.service.spi.Configurable
@@ -44,10 +44,12 @@ class MongoConnectionProvider : ConnectionProvider, Configurable, Startable, Sto
     override fun <T : Any> unwrap(clazz: Class<T>): Nothing = throw UnsupportedOperationException()
 
     override fun configure(configurationValues: Map<String, Any>) {
-        val mongoUri = configurationValues[MONGODB_URI] ?: throw HibernateException("'$MONGODB_URI' setting is mandatory")
+        val mongoUri = configurationValues[MongoSettings.MONGODB_URI]
+            ?: throw HibernateException("'${MongoSettings.MONGODB_URI}' setting is mandatory")
         val connectionString = ConnectionString(mongoUri as String)
         clientSettingsBuilder.applyConnectionString(connectionString)
-        mongoDatabaseName = connectionString.database ?: throw HibernateException("database must be present in MongoDB connection string: $mongoUri")
+        mongoDatabaseName = connectionString.database
+            ?: throw HibernateException("database must be present in MongoDB connection string: $mongoUri")
     }
 
     override fun injectServices(serviceRegistry: ServiceRegistryImplementor) {
@@ -72,5 +74,4 @@ class MongoConnectionProvider : ConnectionProvider, Configurable, Startable, Sto
     override fun stop() {
         checkNotNull(mongoClient).close()
     }
-
 }

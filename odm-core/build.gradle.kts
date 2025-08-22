@@ -34,9 +34,9 @@ tasks.named<Test>("test") {
 
 detekt {
     buildUponDefaultConfig = true // preconfigure defaults
-    allRules = true // activate all available (even unstable) rules.
-    //config.setFrom("$projectDir/config/detekt.yml") // point to your custom config defining rules to run, overwriting default behavior
-    //baseline = file("$projectDir/config/baseline.xml") // a way of suppressing issues before introducing detekt
+    allRules = false // activate all available (even unstable) rules.
+    config.setFrom("$rootDir/config/detekt.yml") // point to your custom config defining rules to run, overwriting default behavior
+    baseline = file("$projectDir/config/baseline.xml") // a way of suppressing issues before introducing detekt
 }
 
 tasks.withType<Detekt>().configureEach {
