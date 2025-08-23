@@ -1,5 +1,5 @@
 [versions]
-hibernate-orm-core = "7.1.0.Final"
+hibernate-orm = "7.1.0.Final"
 mongodb-driver-sync = "5.5.1"
 junit-jupiter-engine = "5.13.4"
 slf4j-api = "2.0.17"
@@ -9,12 +9,17 @@ kotlin-jvm = "2.2.0"
 detekt = "1.23.8"
 
 [libraries]
-hibernate-orm-core = { module = "org.hibernate.orm:hibernate-core", version.ref = "hibernate-orm-core" }
+hibernate-orm-core = { module = "org.hibernate.orm:hibernate-core", version.ref = "hibernate-orm" }
+hibernate-testing = { module = "org.hibernate.orm:hibernate-testing", version.ref = "hibernate-orm" }
 mongodb-driver-sync = { module = "org.mongodb:mongodb-driver-sync", version.ref = "mongodb-driver-sync" }
 junit-jupiter-engine = { module = "org.junit.jupiter:junit-jupiter-engine", version.ref = "junit-jupiter-engine" }
 sl4j-api = { module = "org.slf4j:slf4j-api", version.ref = "slf4j-api" }
 logback-classic = { module = "ch.qos.logback:logback-classic", version.ref = "logback-classic" }
 kotlin-logging = { module = "io.github.oshai:kotlin-logging-jvm", version.ref = "kotlin-logging" }
+kotlin-junit5 = { module = "org.jetbrains.kotlin:kotlin-test-junit5" }
+
+[bundles]
+test-common = [ "kotlin-junit5", "junit-jupiter-engine", "sl4j-api", "logback-classic", "kotlin-logging" ]
 
 [plugins]
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin-jvm" }

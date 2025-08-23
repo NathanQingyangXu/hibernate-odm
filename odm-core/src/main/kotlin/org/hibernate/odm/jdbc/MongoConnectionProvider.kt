@@ -86,6 +86,6 @@ class MongoConnectionProvider : ConnectionProvider, Configurable, Startable, Sto
     }
 
     override fun stop() {
-        checkNotNull(mongoClient).close()
+        mongoClient?.close()
     }
 }
