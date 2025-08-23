@@ -2,6 +2,7 @@ package org.hibernate.odm.jdbc
 
 import com.mongodb.ConnectionString
 import com.mongodb.MongoClientSettings
+import com.mongodb.MongoDriverInformation
 import com.mongodb.client.MongoClient
 import com.mongodb.client.MongoClients
 import com.mongodb.client.MongoDatabase
@@ -17,6 +18,7 @@ import org.hibernate.service.spi.ServiceRegistryImplementor
 import org.hibernate.service.spi.Startable
 import org.hibernate.service.spi.Stoppable
 import java.sql.Connection
+import java.util.Properties
 
 class MongoConnectionProvider : ConnectionProvider, Configurable, Startable, Stoppable, ServiceRegistryAwareService {
     companion object {
@@ -66,12 +68,22 @@ class MongoConnectionProvider : ConnectionProvider, Configurable, Startable, Sto
     }
 
     override fun start() {
-        mongoClient = MongoClients.create(clientSettingsBuilder.build()).also {
-            mongoDatabase = it.getDatabase(checkNotNull(mongoDatabaseName))
-        }
+        val mongoDriverInformation = fetchMongoDriverInformation()
+        mongoClient = MongoClients.create(clientSettingsBuilder.build(), mongoDriverInformation)
+            .also { mongoDatabase = it.getDatabase(checkNotNull(mongoDatabaseName)) }
     }
 
     override fun stop() {
         checkNotNull(mongoClient).close()
+    }
+
+    fun fetchMongoDriverInformation(): MongoDriverInformation {
+        val properties  = javaClass.classLoader.getResourceAsStream("driver.properties").use {
+            Properties().apply { load(it) }
+        }
+        val driverInfoBuilder = MongoDriverInformation.builder()
+            .driverName(properties.getProperty("driver.name"))
+            .driverVersion(properties.getProperty("driver.version"))
+        return driverInfoBuilder.build()
     }
 }

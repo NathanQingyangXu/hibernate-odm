@@ -1,4 +1,5 @@
 import io.gitlab.arturbosch.detekt.Detekt
+import org.apache.tools.ant.filters.ReplaceTokens
 
 plugins {
     `java-library`
@@ -36,7 +37,7 @@ detekt {
     buildUponDefaultConfig = true // preconfigure defaults
     allRules = false // activate all available (even unstable) rules.
     config.setFrom("$rootDir/config/detekt.yml") // point to your custom config defining rules to run, overwriting default behavior
-    baseline = file("$projectDir/config/baseline.xml") // a way of suppressing issues before introducing detekt
+    //baseline = file("$projectDir/config/baseline.xml") // a way of suppressing issues before introducing detekt
 }
 
 tasks.withType<Detekt>().configureEach {
@@ -47,4 +48,11 @@ tasks.withType<Detekt>().configureEach {
         sarif.required = true // standardized SARIF format (https://sarifweb.azurewebsites.net/) to support integrations with GitHub Code Scanning
         md.required = true // simple Markdown format
     }
+}
+
+val mongoDriverName = libs.mongodb.driver.sync.get().name
+val mongoDriverVersion = libs.versions.mongodb.driver.sync.get()
+
+tasks.processResources {
+    filter<ReplaceTokens>("tokens" to mapOf("driver.name" to mongoDriverName, "driver.version" to mongoDriverVersion))
 }

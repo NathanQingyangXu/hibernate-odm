@@ -17,6 +17,7 @@ import org.junit.jupiter.api.assertThrows
 import java.util.UUID
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertTrue
 
 class MongoConnectionProviderTest {
 
@@ -72,7 +73,12 @@ class MongoConnectionProviderTest {
             assertDoesNotThrow { configuration.buildSessionFactory(serviceRegistry) as SessionFactoryImpl }
         val mongoConnectionProvider =
             sessionFactoryImpl.serviceRegistry.getService(ConnectionProvider::class.java) as MongoConnectionProvider
-        val clientSettings = (mongoConnectionProvider.mongoClient as MongoClientImpl).settings
+
+        val mongoClient = (mongoConnectionProvider.mongoClient as MongoClientImpl)
+        assertEquals(2, mongoClient.mongoDriverInformation.driverNames.size) // 'sync' would be added
+        assertTrue(mongoClient.mongoDriverInformation.driverVersions.isNotEmpty())
+
+        val clientSettings = mongoClient.settings
         assertEquals(applicationName, clientSettings.applicationName)
     }
 
