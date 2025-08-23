@@ -17,6 +17,7 @@ import org.junit.jupiter.api.assertThrows
 import java.util.UUID
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 
 class MongoConnectionProviderTest {
@@ -74,12 +75,31 @@ class MongoConnectionProviderTest {
         val mongoConnectionProvider =
             sessionFactoryImpl.serviceRegistry.getService(ConnectionProvider::class.java) as MongoConnectionProvider
 
-        val mongoClient = (mongoConnectionProvider.mongoClient as MongoClientImpl)
-        assertEquals(2, mongoClient.mongoDriverInformation.driverNames.size) // 'sync' would be added
-        assertTrue(mongoClient.mongoDriverInformation.driverVersions.isNotEmpty())
-
-        val clientSettings = mongoClient.settings
+        val clientSettings = (mongoConnectionProvider.mongoClient as MongoClientImpl).settings
         assertEquals(applicationName, clientSettings.applicationName)
+    }
+
+    @Test
+    fun `test MongoDB driver information is passed to the created MongoClient`() {
+        val driverInformation = MongoConnectionProvider.fetchMongoDriverInformation()
+        assertFalse(driverInformation.driverNames.isNullOrEmpty())
+        assertFalse(driverInformation.driverVersions.isNullOrEmpty())
+
+        val configuration = configurationWithDefaultsProperties().apply {
+            // enabling JDBC metadata access requires JDBC connection
+            setProperty(AvailableSettings.ALLOW_METADATA_ON_BOOT, false)
+            setProperty(MongoSettings.MONGODB_URI, "mongodb://localhost:27017/hibernate-odm-test")
+        }
+        val sessionFactoryImpl =
+            assertDoesNotThrow { configuration.buildSessionFactory() as SessionFactoryImpl }
+        val mongoConnectionProvider =
+            sessionFactoryImpl.serviceRegistry.getService(ConnectionProvider::class.java) as MongoConnectionProvider
+
+        val mongoClient = (mongoConnectionProvider.mongoClient as MongoClientImpl)
+
+        // additional info could be added implicitly by driver (e.g. `sync` driver name)
+        assertTrue(mongoClient.mongoDriverInformation.driverNames.containsAll(driverInformation.driverNames))
+        assertTrue(mongoClient.mongoDriverInformation.driverVersions.containsAll(driverInformation.driverVersions))
     }
 
     fun configurationWithDefaultsProperties(): Configuration =

@@ -24,6 +24,18 @@ class MongoConnectionProvider : ConnectionProvider, Configurable, Startable, Sto
     companion object {
         @JvmStatic
         private val logger = KotlinLogging.logger {}
+
+        fun fetchMongoDriverInformation(): MongoDriverInformation {
+            val classLoader = MongoConnectionProvider::class.java.classLoader
+            val driverProperties  = classLoader.getResourceAsStream("driver.properties").use {
+                Properties().apply { load(it) }
+            }
+            val mongoDriverInformationBuilder = MongoDriverInformation.builder().apply {
+                driverName(driverProperties.getProperty("driver.name"))
+                driverVersion(driverProperties.getProperty("driver.version"))
+            }
+            return mongoDriverInformationBuilder.build()
+        }
     }
 
     private val clientSettingsBuilder = MongoClientSettings.builder()
@@ -75,15 +87,5 @@ class MongoConnectionProvider : ConnectionProvider, Configurable, Startable, Sto
 
     override fun stop() {
         checkNotNull(mongoClient).close()
-    }
-
-    fun fetchMongoDriverInformation(): MongoDriverInformation {
-        val properties  = javaClass.classLoader.getResourceAsStream("driver.properties").use {
-            Properties().apply { load(it) }
-        }
-        val driverInfoBuilder = MongoDriverInformation.builder()
-            .driverName(properties.getProperty("driver.name"))
-            .driverVersion(properties.getProperty("driver.version"))
-        return driverInfoBuilder.build()
     }
 }
