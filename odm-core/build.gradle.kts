@@ -84,7 +84,7 @@ val mongoDriverName = libs.mongodb.driver.sync.get().name
 val mongoDriverVersion = libs.versions.mongodb.driver.sync.get()
 
 tasks.processResources {
-  filesMatching("**/driver.properties") {
+  filesMatching("**/mongo_driver.properties") {
     filter<ReplaceTokens>(
         "tokens" to mapOf("driver.name" to mongoDriverName, "driver.version" to mongoDriverVersion))
   }
