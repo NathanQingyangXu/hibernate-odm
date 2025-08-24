@@ -7,6 +7,7 @@ logback-classic = "1.5.18"
 kotlin-logging = "7.0.13"
 kotlin-jvm = "2.2.0"
 detekt = "1.23.8"
+ktfmt = "0.23.0"
 
 [libraries]
 hibernate-orm-core = { module = "org.hibernate.orm:hibernate-core", version.ref = "hibernate-orm" }
@@ -24,3 +25,4 @@ test-common = [ "kotlin-junit5", "junit-jupiter-engine", "sl4j-api", "logback-cl
 [plugins]
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin-jvm" }
 detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
+ktfmt = { id = "com.ncorti.ktfmt.gradle", version.ref = "ktfmt" }
