@@ -20,236 +20,237 @@ import java.util.concurrent.Executor
  * Adapter interface of [Connection] so its implementation class only needs to override API methods
  * that are really needed (those methods Hibernate ORM ever used).
  *
- * The following two API methods of [Connection] are not overridden to avoid conflict with [AbstractCloseable]:
- *  * [close()][Connection.close]
- *  * [isClosed()][Connection.isClosed]
+ * The following two API methods of [Connection] are not overridden to avoid conflict with
+ * [AbstractCloseable]:
+ * * [close()][Connection.close]
+ * * [isClosed()][Connection.isClosed]
  *
- * Its implementation class (or [MongoConnection]) is supposed to inherit [AbstractCloseable]
- * to enjoy the common code logic.
+ * Its implementation class (or [MongoConnection]) is supposed to inherit [AbstractCloseable] to
+ * enjoy the common code logic.
  *
  * @see AbstractCloseable
  * @see MongoConnection
  */
 internal sealed interface ConnectionAdapter : Connection, WrapperAdapter {
-    override fun createStatement(): Statement {
-        throw SQLFeatureNotSupportedException()
-    }
+  override fun createStatement(): Statement {
+    throw SQLFeatureNotSupportedException()
+  }
 
-    override fun prepareStatement(sql: String): PreparedStatement {
-        throw SQLFeatureNotSupportedException()
-    }
+  override fun prepareStatement(sql: String): PreparedStatement {
+    throw SQLFeatureNotSupportedException()
+  }
 
-    override fun prepareCall(sql: String): CallableStatement {
-        throw SQLFeatureNotSupportedException()
-    }
+  override fun prepareCall(sql: String): CallableStatement {
+    throw SQLFeatureNotSupportedException()
+  }
 
-    override fun nativeSQL(sql: String): String {
-        throw SQLFeatureNotSupportedException()
-    }
+  override fun nativeSQL(sql: String): String {
+    throw SQLFeatureNotSupportedException()
+  }
 
-    override fun setAutoCommit(autoCommit: Boolean) {
-        throw SQLFeatureNotSupportedException()
-    }
+  override fun setAutoCommit(autoCommit: Boolean) {
+    throw SQLFeatureNotSupportedException()
+  }
 
-    override fun getAutoCommit(): Boolean {
-        throw SQLFeatureNotSupportedException()
-    }
+  override fun getAutoCommit(): Boolean {
+    throw SQLFeatureNotSupportedException()
+  }
 
-    override fun commit() {
-        throw SQLFeatureNotSupportedException()
-    }
+  override fun commit() {
+    throw SQLFeatureNotSupportedException()
+  }
 
-    override fun rollback() {
-        throw SQLFeatureNotSupportedException()
-    }
+  override fun rollback() {
+    throw SQLFeatureNotSupportedException()
+  }
 
-    override fun getMetaData(): DatabaseMetaData {
-        throw SQLFeatureNotSupportedException()
-    }
+  override fun getMetaData(): DatabaseMetaData {
+    throw SQLFeatureNotSupportedException()
+  }
 
-    override fun setReadOnly(readOnly: Boolean) {
-        throw SQLFeatureNotSupportedException()
-    }
+  override fun setReadOnly(readOnly: Boolean) {
+    throw SQLFeatureNotSupportedException()
+  }
 
-    override fun isReadOnly(): Boolean {
-        throw SQLFeatureNotSupportedException()
-    }
+  override fun isReadOnly(): Boolean {
+    throw SQLFeatureNotSupportedException()
+  }
 
-    override fun setCatalog(catalog: String) {
-        throw SQLFeatureNotSupportedException()
-    }
+  override fun setCatalog(catalog: String) {
+    throw SQLFeatureNotSupportedException()
+  }
 
-    override fun getCatalog(): String? {
-        throw SQLFeatureNotSupportedException()
-    }
+  override fun getCatalog(): String? {
+    throw SQLFeatureNotSupportedException()
+  }
 
-    override fun setTransactionIsolation(level: Int) {
-        throw SQLFeatureNotSupportedException()
-    }
+  override fun setTransactionIsolation(level: Int) {
+    throw SQLFeatureNotSupportedException()
+  }
 
-    override fun getTransactionIsolation(): Int {
-        throw SQLFeatureNotSupportedException()
-    }
+  override fun getTransactionIsolation(): Int {
+    throw SQLFeatureNotSupportedException()
+  }
 
-    override fun getWarnings(): SQLWarning? {
-        throw SQLFeatureNotSupportedException()
-    }
+  override fun getWarnings(): SQLWarning? {
+    throw SQLFeatureNotSupportedException()
+  }
 
-    override fun clearWarnings() {
-        throw SQLFeatureNotSupportedException()
-    }
+  override fun clearWarnings() {
+    throw SQLFeatureNotSupportedException()
+  }
 
-    override fun createStatement(resultSetType: Int, resultSetConcurrency: Int): Statement {
-        throw SQLFeatureNotSupportedException()
-    }
+  override fun createStatement(resultSetType: Int, resultSetConcurrency: Int): Statement {
+    throw SQLFeatureNotSupportedException()
+  }
 
-    override fun prepareStatement(
-        sql: String,
-        resultSetType: Int,
-        resultSetConcurrency: Int
-    ): PreparedStatement {
-        throw SQLFeatureNotSupportedException()
-    }
+  override fun prepareStatement(
+      sql: String,
+      resultSetType: Int,
+      resultSetConcurrency: Int
+  ): PreparedStatement {
+    throw SQLFeatureNotSupportedException()
+  }
 
-    override fun prepareCall(
-        sql: String,
-        resultSetType: Int,
-        resultSetConcurrency: Int
-    ): CallableStatement {
-        throw SQLFeatureNotSupportedException()
-    }
+  override fun prepareCall(
+      sql: String,
+      resultSetType: Int,
+      resultSetConcurrency: Int
+  ): CallableStatement {
+    throw SQLFeatureNotSupportedException()
+  }
 
-    override fun getTypeMap(): Map<String, Class<*>> {
-        throw SQLFeatureNotSupportedException()
-    }
+  override fun getTypeMap(): Map<String, Class<*>> {
+    throw SQLFeatureNotSupportedException()
+  }
 
-    override fun setTypeMap(map: Map<String, Class<*>>) {
-        throw SQLFeatureNotSupportedException()
-    }
+  override fun setTypeMap(map: Map<String, Class<*>>) {
+    throw SQLFeatureNotSupportedException()
+  }
 
-    override fun setHoldability(holdability: Int) {
-        throw SQLFeatureNotSupportedException()
-    }
+  override fun setHoldability(holdability: Int) {
+    throw SQLFeatureNotSupportedException()
+  }
 
-    override fun getHoldability(): Int {
-        throw SQLFeatureNotSupportedException()
-    }
+  override fun getHoldability(): Int {
+    throw SQLFeatureNotSupportedException()
+  }
 
-    override fun setSavepoint(): Savepoint {
-        throw SQLFeatureNotSupportedException()
-    }
+  override fun setSavepoint(): Savepoint {
+    throw SQLFeatureNotSupportedException()
+  }
 
-    override fun setSavepoint(name: String): Savepoint {
-        throw SQLFeatureNotSupportedException()
-    }
+  override fun setSavepoint(name: String): Savepoint {
+    throw SQLFeatureNotSupportedException()
+  }
 
-    override fun rollback(savepoint: Savepoint) {
-        throw SQLFeatureNotSupportedException()
-    }
+  override fun rollback(savepoint: Savepoint) {
+    throw SQLFeatureNotSupportedException()
+  }
 
-    override fun releaseSavepoint(savepoint: Savepoint) {
-        throw SQLFeatureNotSupportedException()
-    }
+  override fun releaseSavepoint(savepoint: Savepoint) {
+    throw SQLFeatureNotSupportedException()
+  }
 
-    override fun createStatement(
-        resultSetType: Int,
-        resultSetConcurrency: Int,
-        resultSetHoldability: Int
-    ): Statement {
-        throw SQLFeatureNotSupportedException()
-    }
+  override fun createStatement(
+      resultSetType: Int,
+      resultSetConcurrency: Int,
+      resultSetHoldability: Int
+  ): Statement {
+    throw SQLFeatureNotSupportedException()
+  }
 
-    override fun prepareStatement(
-        sql: String,
-        resultSetType: Int,
-        resultSetConcurrency: Int,
-        resultSetHoldability: Int
-    ): PreparedStatement {
-        throw SQLFeatureNotSupportedException()
-    }
+  override fun prepareStatement(
+      sql: String,
+      resultSetType: Int,
+      resultSetConcurrency: Int,
+      resultSetHoldability: Int
+  ): PreparedStatement {
+    throw SQLFeatureNotSupportedException()
+  }
 
-    override fun prepareCall(
-        sql: String,
-        resultSetType: Int,
-        resultSetConcurrency: Int,
-        resultSetHoldability: Int
-    ): CallableStatement {
-        throw SQLFeatureNotSupportedException()
-    }
+  override fun prepareCall(
+      sql: String,
+      resultSetType: Int,
+      resultSetConcurrency: Int,
+      resultSetHoldability: Int
+  ): CallableStatement {
+    throw SQLFeatureNotSupportedException()
+  }
 
-    override fun prepareStatement(sql: String, autoGeneratedKeys: Int): PreparedStatement {
-        throw SQLFeatureNotSupportedException()
-    }
+  override fun prepareStatement(sql: String, autoGeneratedKeys: Int): PreparedStatement {
+    throw SQLFeatureNotSupportedException()
+  }
 
-    override fun prepareStatement(sql: String, columnIndexes: IntArray): PreparedStatement {
-        throw SQLFeatureNotSupportedException()
-    }
+  override fun prepareStatement(sql: String, columnIndexes: IntArray): PreparedStatement {
+    throw SQLFeatureNotSupportedException()
+  }
 
-    override fun prepareStatement(sql: String, columnNames: Array<out String>): PreparedStatement {
-        throw SQLFeatureNotSupportedException()
-    }
+  override fun prepareStatement(sql: String, columnNames: Array<out String>): PreparedStatement {
+    throw SQLFeatureNotSupportedException()
+  }
 
-    override fun createClob(): Clob {
-        throw SQLFeatureNotSupportedException()
-    }
+  override fun createClob(): Clob {
+    throw SQLFeatureNotSupportedException()
+  }
 
-    override fun createBlob(): Blob {
-        throw SQLFeatureNotSupportedException()
-    }
+  override fun createBlob(): Blob {
+    throw SQLFeatureNotSupportedException()
+  }
 
-    override fun createNClob(): NClob {
-        throw SQLFeatureNotSupportedException()
-    }
+  override fun createNClob(): NClob {
+    throw SQLFeatureNotSupportedException()
+  }
 
-    override fun createSQLXML(): SQLXML {
-        throw SQLFeatureNotSupportedException()
-    }
+  override fun createSQLXML(): SQLXML {
+    throw SQLFeatureNotSupportedException()
+  }
 
-    override fun isValid(timeout: Int): Boolean {
-        throw SQLFeatureNotSupportedException()
-    }
+  override fun isValid(timeout: Int): Boolean {
+    throw SQLFeatureNotSupportedException()
+  }
 
-    override fun setClientInfo(name: String, value: String) {
-        throw SQLFeatureNotSupportedException()
-    }
+  override fun setClientInfo(name: String, value: String) {
+    throw SQLFeatureNotSupportedException()
+  }
 
-    override fun setClientInfo(properties: Properties) {
-        throw SQLFeatureNotSupportedException()
-    }
+  override fun setClientInfo(properties: Properties) {
+    throw SQLFeatureNotSupportedException()
+  }
 
-    override fun getClientInfo(name: String): String {
-        throw SQLFeatureNotSupportedException()
-    }
+  override fun getClientInfo(name: String): String {
+    throw SQLFeatureNotSupportedException()
+  }
 
-    override fun getClientInfo(): Properties {
-        throw SQLFeatureNotSupportedException()
-    }
+  override fun getClientInfo(): Properties {
+    throw SQLFeatureNotSupportedException()
+  }
 
-    override fun createArrayOf(typeName: String, elements: Array<out Any>): java.sql.Array {
-        throw SQLFeatureNotSupportedException()
-    }
+  override fun createArrayOf(typeName: String, elements: Array<out Any>): java.sql.Array {
+    throw SQLFeatureNotSupportedException()
+  }
 
-    override fun createStruct(typeName: String, attributes: Array<out Any>): Struct {
-        throw SQLFeatureNotSupportedException()
-    }
+  override fun createStruct(typeName: String, attributes: Array<out Any>): Struct {
+    throw SQLFeatureNotSupportedException()
+  }
 
-    override fun setSchema(schema: String) {
-        throw SQLFeatureNotSupportedException()
-    }
+  override fun setSchema(schema: String) {
+    throw SQLFeatureNotSupportedException()
+  }
 
-    override fun getSchema(): String? {
-        throw SQLFeatureNotSupportedException()
-    }
+  override fun getSchema(): String? {
+    throw SQLFeatureNotSupportedException()
+  }
 
-    override fun abort(executor: Executor) {
-        throw SQLFeatureNotSupportedException()
-    }
+  override fun abort(executor: Executor) {
+    throw SQLFeatureNotSupportedException()
+  }
 
-    override fun setNetworkTimeout(executor: Executor, milliseconds: Int) {
-        throw SQLFeatureNotSupportedException()
-    }
+  override fun setNetworkTimeout(executor: Executor, milliseconds: Int) {
+    throw SQLFeatureNotSupportedException()
+  }
 
-    override fun getNetworkTimeout(): Int {
-        throw SQLFeatureNotSupportedException()
-    }
+  override fun getNetworkTimeout(): Int {
+    throw SQLFeatureNotSupportedException()
+  }
 }

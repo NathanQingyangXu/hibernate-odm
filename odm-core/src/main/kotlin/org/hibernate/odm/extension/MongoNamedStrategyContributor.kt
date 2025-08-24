@@ -10,20 +10,18 @@ import org.hibernate.odm.util.MongoConstants.MONGO_CONNECTION_PROVIDER_SHORT_NAM
 import org.hibernate.odm.util.MongoConstants.MONGO_DIALOG_SHORT_NAME
 
 internal class MongoNamedStrategyContributor : NamedStrategyContributor {
-    override fun contributeStrategyImplementations(contributions: NamedStrategyContributions) {
-        contributions.contributeStrategyImplementor(
-            Dialect::class.java,
-            MongoDialect::class.java, MONGO_DIALOG_SHORT_NAME
-        )
-        contributions.contributeStrategyImplementor(
-            ConnectionProvider::class.java,
-            MongoConnectionProvider::class.java, MONGO_CONNECTION_PROVIDER_SHORT_NAME
-        )
-    }
+  override fun contributeStrategyImplementations(contributions: NamedStrategyContributions) {
+    contributions.contributeStrategyImplementor(
+        Dialect::class.java, MongoDialect::class.java, MONGO_DIALOG_SHORT_NAME)
+    contributions.contributeStrategyImplementor(
+        ConnectionProvider::class.java,
+        MongoConnectionProvider::class.java,
+        MONGO_CONNECTION_PROVIDER_SHORT_NAME)
+  }
 
-    override fun clearStrategyImplementations(contributions: NamedStrategyContributions) {
-        contributions.removeStrategyImplementor(Dialect::class.java, MongoDialect::class.java)
-        contributions.removeStrategyImplementor(
-            ConnectionProvider::class.java, MongoConnectionProvider::class.java)
-    }
+  override fun clearStrategyImplementations(contributions: NamedStrategyContributions) {
+    contributions.removeStrategyImplementor(Dialect::class.java, MongoDialect::class.java)
+    contributions.removeStrategyImplementor(
+        ConnectionProvider::class.java, MongoConnectionProvider::class.java)
+  }
 }

@@ -4,5 +4,5 @@ import org.hibernate.dialect.Dialect
 
 @Suppress("DEPRECATION")
 internal class MongoDialect : Dialect() {
-    //todo
+  // todo
 }

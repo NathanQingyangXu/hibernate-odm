@@ -7,173 +7,174 @@ import java.sql.SQLWarning
 import java.sql.Statement
 
 /**
- * The following two API methods of [Connection] are not overridden to avoid conflict with [AbstractCloseable]:
- *  * [close()][Connection.close]
- *  * [isClosed()][Connection.isClosed]
+ * The following two API methods of [Connection] are not overridden to avoid conflict with
+ * [AbstractCloseable]:
+ * * [close()][Connection.close]
+ * * [isClosed()][Connection.isClosed]
  *
- * Its implementation class (or [MongoConnection]) is supposed to inherit [AbstractCloseable]
- * to enjoy the common code logic.
+ * Its implementation class (or [MongoConnection]) is supposed to inherit [AbstractCloseable] to
+ * enjoy the common code logic.
  *
  * @see AbstractCloseable
  */
 internal sealed interface StatementAdapter : Statement, WrapperAdapter {
-    override fun executeQuery(sql: String): ResultSet {
-        throw SQLFeatureNotSupportedException()
-    }
+  override fun executeQuery(sql: String): ResultSet {
+    throw SQLFeatureNotSupportedException()
+  }
 
-    override fun executeUpdate(sql: String): Int {
-        throw SQLFeatureNotSupportedException()
-    }
+  override fun executeUpdate(sql: String): Int {
+    throw SQLFeatureNotSupportedException()
+  }
 
-    override fun getMaxFieldSize(): Int {
-        throw SQLFeatureNotSupportedException()
-    }
+  override fun getMaxFieldSize(): Int {
+    throw SQLFeatureNotSupportedException()
+  }
 
-    override fun setMaxFieldSize(max: Int) {
-        throw SQLFeatureNotSupportedException()
-    }
+  override fun setMaxFieldSize(max: Int) {
+    throw SQLFeatureNotSupportedException()
+  }
 
-    override fun getMaxRows(): Int {
-        throw SQLFeatureNotSupportedException()
-    }
+  override fun getMaxRows(): Int {
+    throw SQLFeatureNotSupportedException()
+  }
 
-    override fun setMaxRows(max: Int) {
-        throw SQLFeatureNotSupportedException()
-    }
+  override fun setMaxRows(max: Int) {
+    throw SQLFeatureNotSupportedException()
+  }
 
-    override fun setEscapeProcessing(enable: Boolean) {
-        throw SQLFeatureNotSupportedException()
-    }
+  override fun setEscapeProcessing(enable: Boolean) {
+    throw SQLFeatureNotSupportedException()
+  }
 
-    override fun getQueryTimeout(): Int {
-        throw SQLFeatureNotSupportedException()
-    }
+  override fun getQueryTimeout(): Int {
+    throw SQLFeatureNotSupportedException()
+  }
 
-    override fun setQueryTimeout(seconds: Int) {
-        throw SQLFeatureNotSupportedException()
-    }
+  override fun setQueryTimeout(seconds: Int) {
+    throw SQLFeatureNotSupportedException()
+  }
 
-    override fun cancel() {
-        throw SQLFeatureNotSupportedException()
-    }
+  override fun cancel() {
+    throw SQLFeatureNotSupportedException()
+  }
 
-    override fun getWarnings(): SQLWarning? {
-        throw SQLFeatureNotSupportedException()
-    }
+  override fun getWarnings(): SQLWarning? {
+    throw SQLFeatureNotSupportedException()
+  }
 
-    override fun clearWarnings() {
-        throw SQLFeatureNotSupportedException()
-    }
+  override fun clearWarnings() {
+    throw SQLFeatureNotSupportedException()
+  }
 
-    override fun setCursorName(name: String) {
-        throw SQLFeatureNotSupportedException()
-    }
+  override fun setCursorName(name: String) {
+    throw SQLFeatureNotSupportedException()
+  }
 
-    override fun execute(sql: String): Boolean {
-        throw SQLFeatureNotSupportedException()
-    }
+  override fun execute(sql: String): Boolean {
+    throw SQLFeatureNotSupportedException()
+  }
 
-    override fun getResultSet(): ResultSet? {
-        throw SQLFeatureNotSupportedException()
-    }
+  override fun getResultSet(): ResultSet? {
+    throw SQLFeatureNotSupportedException()
+  }
 
-    override fun getUpdateCount(): Int {
-        throw SQLFeatureNotSupportedException()
-    }
+  override fun getUpdateCount(): Int {
+    throw SQLFeatureNotSupportedException()
+  }
 
-    override fun getMoreResults(): Boolean {
-        throw SQLFeatureNotSupportedException()
-    }
+  override fun getMoreResults(): Boolean {
+    throw SQLFeatureNotSupportedException()
+  }
 
-    override fun setFetchDirection(direction: Int) {
-        throw SQLFeatureNotSupportedException()
-    }
+  override fun setFetchDirection(direction: Int) {
+    throw SQLFeatureNotSupportedException()
+  }
 
-    override fun getFetchDirection(): Int {
-        throw SQLFeatureNotSupportedException()
-    }
+  override fun getFetchDirection(): Int {
+    throw SQLFeatureNotSupportedException()
+  }
 
-    override fun setFetchSize(rows: Int) {
-        throw SQLFeatureNotSupportedException()
-    }
+  override fun setFetchSize(rows: Int) {
+    throw SQLFeatureNotSupportedException()
+  }
 
-    override fun getFetchSize(): Int {
-        throw SQLFeatureNotSupportedException()
-    }
+  override fun getFetchSize(): Int {
+    throw SQLFeatureNotSupportedException()
+  }
 
-    override fun getResultSetConcurrency(): Int {
-        throw SQLFeatureNotSupportedException()
-    }
+  override fun getResultSetConcurrency(): Int {
+    throw SQLFeatureNotSupportedException()
+  }
 
-    override fun getResultSetType(): Int {
-        throw SQLFeatureNotSupportedException()
-    }
+  override fun getResultSetType(): Int {
+    throw SQLFeatureNotSupportedException()
+  }
 
-    override fun addBatch(sql: String) {
-        throw SQLFeatureNotSupportedException()
-    }
+  override fun addBatch(sql: String) {
+    throw SQLFeatureNotSupportedException()
+  }
 
-    override fun clearBatch() {
-        throw SQLFeatureNotSupportedException()
-    }
+  override fun clearBatch() {
+    throw SQLFeatureNotSupportedException()
+  }
 
-    override fun executeBatch(): IntArray {
-        throw SQLFeatureNotSupportedException()
-    }
+  override fun executeBatch(): IntArray {
+    throw SQLFeatureNotSupportedException()
+  }
 
-    override fun getConnection(): Connection {
-        throw SQLFeatureNotSupportedException()
-    }
+  override fun getConnection(): Connection {
+    throw SQLFeatureNotSupportedException()
+  }
 
-    override fun getMoreResults(current: Int): Boolean {
-        throw SQLFeatureNotSupportedException()
-    }
+  override fun getMoreResults(current: Int): Boolean {
+    throw SQLFeatureNotSupportedException()
+  }
 
-    override fun getGeneratedKeys(): ResultSet {
-        throw SQLFeatureNotSupportedException()
-    }
+  override fun getGeneratedKeys(): ResultSet {
+    throw SQLFeatureNotSupportedException()
+  }
 
-    override fun executeUpdate(sql: String, autoGeneratedKeys: Int): Int {
-        throw SQLFeatureNotSupportedException()
-    }
+  override fun executeUpdate(sql: String, autoGeneratedKeys: Int): Int {
+    throw SQLFeatureNotSupportedException()
+  }
 
-    override fun executeUpdate(sql: String, columnIndexes: IntArray): Int {
-        throw SQLFeatureNotSupportedException()
-    }
+  override fun executeUpdate(sql: String, columnIndexes: IntArray): Int {
+    throw SQLFeatureNotSupportedException()
+  }
 
-    override fun executeUpdate(sql: String, columnNames: Array<out String>): Int {
-        throw SQLFeatureNotSupportedException()
-    }
+  override fun executeUpdate(sql: String, columnNames: Array<out String>): Int {
+    throw SQLFeatureNotSupportedException()
+  }
 
-    override fun execute(sql: String, autoGeneratedKeys: Int): Boolean {
-        throw SQLFeatureNotSupportedException()
-    }
+  override fun execute(sql: String, autoGeneratedKeys: Int): Boolean {
+    throw SQLFeatureNotSupportedException()
+  }
 
-    override fun execute(sql: String, columnIndexes: IntArray): Boolean {
-        throw SQLFeatureNotSupportedException()
-    }
+  override fun execute(sql: String, columnIndexes: IntArray): Boolean {
+    throw SQLFeatureNotSupportedException()
+  }
 
-    override fun execute(sql: String, columnNames: Array<out String>): Boolean {
-        throw SQLFeatureNotSupportedException()
-    }
+  override fun execute(sql: String, columnNames: Array<out String>): Boolean {
+    throw SQLFeatureNotSupportedException()
+  }
 
-    override fun getResultSetHoldability(): Int {
-        throw SQLFeatureNotSupportedException()
-    }
+  override fun getResultSetHoldability(): Int {
+    throw SQLFeatureNotSupportedException()
+  }
 
-    override fun setPoolable(poolable: Boolean) {
-        throw SQLFeatureNotSupportedException()
-    }
+  override fun setPoolable(poolable: Boolean) {
+    throw SQLFeatureNotSupportedException()
+  }
 
-    override fun isPoolable(): Boolean {
-        throw SQLFeatureNotSupportedException()
-    }
+  override fun isPoolable(): Boolean {
+    throw SQLFeatureNotSupportedException()
+  }
 
-    override fun closeOnCompletion() {
-        throw SQLFeatureNotSupportedException()
-    }
+  override fun closeOnCompletion() {
+    throw SQLFeatureNotSupportedException()
+  }
 
-    override fun isCloseOnCompletion(): Boolean {
-        throw SQLFeatureNotSupportedException()
-    }
+  override fun isCloseOnCompletion(): Boolean {
+    throw SQLFeatureNotSupportedException()
+  }
 }

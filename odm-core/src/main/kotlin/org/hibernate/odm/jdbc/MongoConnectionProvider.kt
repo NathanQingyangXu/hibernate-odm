@@ -7,6 +7,8 @@ import com.mongodb.client.MongoClient
 import com.mongodb.client.MongoClients
 import com.mongodb.client.MongoDatabase
 import io.github.oshai.kotlinlogging.KotlinLogging
+import java.sql.Connection
+import java.util.Properties
 import org.hibernate.HibernateException
 import org.hibernate.engine.jdbc.connections.spi.ConnectionProvider
 import org.hibernate.odm.cfg.MongoSettings
@@ -17,74 +19,80 @@ import org.hibernate.service.spi.ServiceRegistryAwareService
 import org.hibernate.service.spi.ServiceRegistryImplementor
 import org.hibernate.service.spi.Startable
 import org.hibernate.service.spi.Stoppable
-import java.sql.Connection
-import java.util.Properties
 
-internal class MongoConnectionProvider
-    : ConnectionProvider, Configurable, Startable, Stoppable, ServiceRegistryAwareService {
-    companion object {
-        @JvmStatic
-        private val logger = KotlinLogging.logger {}
+internal class MongoConnectionProvider :
+    ConnectionProvider, Configurable, Startable, Stoppable, ServiceRegistryAwareService {
+  companion object {
+    @JvmStatic private val logger = KotlinLogging.logger {}
 
-        fun fetchMongoDriverInformation(): MongoDriverInformation {
-            val classLoader = MongoConnectionProvider::class.java.classLoader
-            val driverProperties  = classLoader.getResourceAsStream("mongo_driver.properties").use {
-                Properties().apply { load(it) }
-            }
-            val mongoDriverInformationBuilder = MongoDriverInformation.builder().apply {
-                driverName(driverProperties.getProperty("driver.name"))
-                driverVersion(driverProperties.getProperty("driver.version"))
-            }
-            return mongoDriverInformationBuilder.build()
-        }
+    fun fetchMongoDriverInformation(): MongoDriverInformation {
+      val classLoader = MongoConnectionProvider::class.java.classLoader
+      val driverProperties =
+          classLoader.getResourceAsStream("mongo_driver.properties").use {
+            Properties().apply { load(it) }
+          }
+      val mongoDriverInformationBuilder =
+          MongoDriverInformation.builder().apply {
+            driverName(driverProperties.getProperty("driver.name"))
+            driverVersion(driverProperties.getProperty("driver.version"))
+          }
+      return mongoDriverInformationBuilder.build()
     }
+  }
 
-    private val clientSettingsBuilder = MongoClientSettings.builder()
+  private val clientSettingsBuilder = MongoClientSettings.builder()
 
-    internal var mongoClient: MongoClient? = null
+  internal var mongoClient: MongoClient? = null
 
-    private var mongoDatabaseName: String? = null
+  private var mongoDatabaseName: String? = null
 
-    private var mongoDatabase: MongoDatabase? = null
+  private var mongoDatabase: MongoDatabase? = null
 
-    override fun getConnection(): Connection = MongoConnection(checkNotNull(mongoClient))
+  override fun getConnection(): Connection = MongoConnection(checkNotNull(mongoClient))
 
-    override fun closeConnection(conn: Connection) {
-        conn.close()
-    }
+  override fun closeConnection(conn: Connection) {
+    conn.close()
+  }
 
-    override fun supportsAggressiveRelease() = false
-    override fun isUnwrappableAs(clazz: Class<*>) = false
-    override fun <T : Any> unwrap(clazz: Class<T>): Nothing = throw UnsupportedOperationException()
+  override fun supportsAggressiveRelease() = false
 
-    override fun configure(configurationValues: Map<String, Any>) {
-        val mongoUri = configurationValues[MongoSettings.MONGODB_URI]
+  override fun isUnwrappableAs(clazz: Class<*>) = false
+
+  override fun <T : Any> unwrap(clazz: Class<T>): Nothing = throw UnsupportedOperationException()
+
+  override fun configure(configurationValues: Map<String, Any>) {
+    val mongoUri =
+        configurationValues[MongoSettings.MONGODB_URI]
             ?: throw HibernateException("'${MongoSettings.MONGODB_URI}' setting is mandatory")
-        val connectionString = ConnectionString(mongoUri as String)
-        clientSettingsBuilder.applyConnectionString(connectionString)
-        mongoDatabaseName = connectionString.database
-            ?: throw HibernateException("database must be present in MongoDB connection string: $mongoUri")
-    }
+    val connectionString = ConnectionString(mongoUri as String)
+    clientSettingsBuilder.applyConnectionString(connectionString)
+    mongoDatabaseName =
+        connectionString.database
+            ?: throw HibernateException(
+                "database must be present in MongoDB connection string: $mongoUri")
+  }
 
-    override fun injectServices(serviceRegistry: ServiceRegistryImplementor) {
-        try {
-            serviceRegistry.getService(MongoClientConfigurator::class.java)?.apply {
-                logger.info { "${MongoClientConfigurator::class.simpleName} service found" }
-                config(clientSettingsBuilder)
-                logger.info { "${MongoClientConfigurator::class.simpleName} service applied" }
-            }
-        } catch (_: UnknownServiceException) {
-            logger.debug { "No ${MongoClientConfigurator::class.simpleName} service found" }
+  override fun injectServices(serviceRegistry: ServiceRegistryImplementor) {
+    try {
+      serviceRegistry.getService(MongoClientConfigurator::class.java)?.apply {
+        logger.info { "${MongoClientConfigurator::class.simpleName} service found" }
+        config(clientSettingsBuilder)
+        logger.info { "${MongoClientConfigurator::class.simpleName} service applied" }
+      }
+    } catch (_: UnknownServiceException) {
+      logger.debug { "No ${MongoClientConfigurator::class.simpleName} service found" }
+    }
+  }
+
+  override fun start() {
+    val mongoDriverInformation = fetchMongoDriverInformation()
+    mongoClient =
+        MongoClients.create(clientSettingsBuilder.build(), mongoDriverInformation).also {
+          mongoDatabase = it.getDatabase(checkNotNull(mongoDatabaseName))
         }
-    }
+  }
 
-    override fun start() {
-        val mongoDriverInformation = fetchMongoDriverInformation()
-        mongoClient = MongoClients.create(clientSettingsBuilder.build(), mongoDriverInformation)
-            .also { mongoDatabase = it.getDatabase(checkNotNull(mongoDatabaseName)) }
-    }
-
-    override fun stop() {
-        mongoClient?.close()
-    }
+  override fun stop() {
+    mongoClient?.close()
+  }
 }
