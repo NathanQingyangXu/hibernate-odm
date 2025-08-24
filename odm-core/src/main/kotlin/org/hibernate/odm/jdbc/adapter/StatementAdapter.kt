@@ -6,7 +6,17 @@ import java.sql.SQLFeatureNotSupportedException
 import java.sql.SQLWarning
 import java.sql.Statement
 
-sealed interface StatementAdapter : Statement, WrapperAdapter {
+/**
+ * The following two API methods of [Connection] are not overridden to avoid conflict with [AbstractCloseable]:
+ *  * [close()][Connection.close]
+ *  * [isClosed()][Connection.isClosed]
+ *
+ * Its implementation class (or [MongoConnection]) is supposed to inherit [AbstractCloseable]
+ * to enjoy the common code logic.
+ *
+ * @see AbstractCloseable
+ */
+internal sealed interface StatementAdapter : Statement, WrapperAdapter {
     override fun executeQuery(sql: String): ResultSet {
         throw SQLFeatureNotSupportedException()
     }

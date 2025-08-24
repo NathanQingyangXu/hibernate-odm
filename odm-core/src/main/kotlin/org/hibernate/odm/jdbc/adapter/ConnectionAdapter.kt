@@ -27,10 +27,10 @@ import java.util.concurrent.Executor
  * Its implementation class (or [MongoConnection]) is supposed to inherit [AbstractCloseable]
  * to enjoy the common code logic.
  *
- * @see MongoConnection
  * @see AbstractCloseable
+ * @see MongoConnection
  */
-sealed interface ConnectionAdapter : Connection, WrapperAdapter {
+internal sealed interface ConnectionAdapter : Connection, WrapperAdapter {
     override fun createStatement(): Statement {
         throw SQLFeatureNotSupportedException()
     }

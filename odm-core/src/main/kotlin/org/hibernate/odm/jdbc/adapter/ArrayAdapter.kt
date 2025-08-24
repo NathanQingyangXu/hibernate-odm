@@ -4,7 +4,7 @@ import java.sql.Array
 import java.sql.ResultSet
 import java.sql.SQLFeatureNotSupportedException
 
-sealed interface ArrayAdapter : Array {
+internal sealed interface ArrayAdapter : Array {
     override fun getBaseTypeName(): String {
         throw SQLFeatureNotSupportedException()
     }

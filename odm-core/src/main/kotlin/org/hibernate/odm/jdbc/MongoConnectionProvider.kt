@@ -20,14 +20,15 @@ import org.hibernate.service.spi.Stoppable
 import java.sql.Connection
 import java.util.Properties
 
-class MongoConnectionProvider : ConnectionProvider, Configurable, Startable, Stoppable, ServiceRegistryAwareService {
+internal class MongoConnectionProvider
+    : ConnectionProvider, Configurable, Startable, Stoppable, ServiceRegistryAwareService {
     companion object {
         @JvmStatic
         private val logger = KotlinLogging.logger {}
 
         fun fetchMongoDriverInformation(): MongoDriverInformation {
             val classLoader = MongoConnectionProvider::class.java.classLoader
-            val driverProperties  = classLoader.getResourceAsStream("driver.properties").use {
+            val driverProperties  = classLoader.getResourceAsStream("mongo_driver.properties").use {
                 Properties().apply { load(it) }
             }
             val mongoDriverInformationBuilder = MongoDriverInformation.builder().apply {
@@ -46,9 +47,7 @@ class MongoConnectionProvider : ConnectionProvider, Configurable, Startable, Sto
 
     private var mongoDatabase: MongoDatabase? = null
 
-    override fun getConnection(): Connection = MongoConnection(
-        client = checkNotNull(mongoClient), database = checkNotNull(mongoDatabase)
-    )
+    override fun getConnection(): Connection = MongoConnection(checkNotNull(mongoClient))
 
     override fun closeConnection(conn: Connection) {
         conn.close()

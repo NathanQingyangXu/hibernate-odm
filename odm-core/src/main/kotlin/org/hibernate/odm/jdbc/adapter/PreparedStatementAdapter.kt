@@ -20,7 +20,7 @@ import java.sql.Time
 import java.sql.Timestamp
 import java.util.Calendar
 
-sealed interface PreparedStatementAdapter : PreparedStatement, StatementAdapter {
+internal sealed interface PreparedStatementAdapter : PreparedStatement, StatementAdapter {
     override fun executeQuery(): ResultSet {
         throw SQLFeatureNotSupportedException()
     }

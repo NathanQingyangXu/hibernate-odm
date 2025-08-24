@@ -1,8 +1,9 @@
 package org.hibernate.odm.jdbc
 
 import io.github.oshai.kotlinlogging.KotlinLogging
+import java.sql.SQLException
 
-internal abstract class AbstractCloseable {
+abstract class AbstractCloseable {
     companion object {
         @JvmStatic
         private val logger = KotlinLogging.logger {}
@@ -25,5 +26,17 @@ internal abstract class AbstractCloseable {
         }
     }
 
+    /**
+     * The first statement to be invoked in all overridden JDBC API methods in child class of [AbstractCloseable]
+     */
+    internal fun ensureNotClosed() {
+        if (closed) {
+            throw SQLException("this ${javaClass.simpleName} has been closed already")
+        }
+    }
+
+    /**
+     * The method to be invoked internally by [close] when rest assured it has not been closed already
+     */
     abstract fun closeActually()
 }

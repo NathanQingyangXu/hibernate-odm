@@ -7,6 +7,7 @@ import java.net.URL
 import java.sql.Array
 import java.sql.Blob
 import java.sql.Clob
+import java.sql.Connection
 import java.sql.Date
 import java.sql.NClob
 import java.sql.Ref
@@ -21,7 +22,17 @@ import java.sql.Time
 import java.sql.Timestamp
 import java.util.Calendar
 
-sealed interface ResultSetAdapter : ResultSet, WrapperAdapter {
+/**
+ * The following two API methods of [Connection] are not overridden to avoid conflict with [AbstractCloseable]:
+ *  * [close()][Connection.close]
+ *  * [isClosed()][Connection.isClosed]
+ *
+ * Its implementation class (or [MongoConnection]) is supposed to inherit [AbstractCloseable]
+ * to enjoy the common code logic.
+ *
+ * @see AbstractCloseable
+ */
+internal sealed interface ResultSetAdapter : ResultSet, WrapperAdapter {
     override fun next(): Boolean {
         throw SQLFeatureNotSupportedException()
     }
