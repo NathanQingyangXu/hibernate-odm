@@ -1,6 +1,7 @@
 package org.hibernate.odm.jdbc
 
 import com.mongodb.client.ClientSession
+import com.mongodb.client.MongoClient
 import java.sql.Blob
 import java.sql.CallableStatement
 import java.sql.Clob
@@ -13,8 +14,10 @@ import java.sql.SQLXML
 import java.sql.Statement
 import java.sql.Struct
 
-internal class MongoConnection(private var clientSession: ClientSession) :
+internal class MongoConnection(private var mongoClient: MongoClient) :
     AbstractCloseable(), ConnectionAdapter {
+  private val clientSession: ClientSession = mongoClient.startSession()
+
   override fun closeActually() {
     clientSession.close()
   }

@@ -1,10 +1,12 @@
 package org.hibernate.odm.jdbc
 
 import com.mongodb.client.ClientSession
+import com.mongodb.client.MongoClient
+import io.mockk.MockKAnnotations
 import io.mockk.Runs
 import io.mockk.every
+import io.mockk.impl.annotations.MockK
 import io.mockk.just
-import io.mockk.mockk
 import java.sql.SQLException
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -14,13 +16,19 @@ import org.junit.jupiter.api.assertThrows
 
 class MongoConnectionTest {
 
+  @MockK private var client: MongoClient? = null
+  @MockK private var clientSession: ClientSession? = null
+
   private var mongoConnection: MongoConnection? = null
 
   @BeforeEach
-  fun beforeEach() {
-    val clientSession = mockk<ClientSession>()
-    every { clientSession.close() } just Runs
-    mongoConnection = MongoConnection(clientSession).also { it.close() }
+  fun setUp() {
+    MockKAnnotations.init(this)
+    val nonNullClient = checkNotNull(client)
+    val nonNullClientSession = checkNotNull(clientSession)
+    every { nonNullClientSession.close() } just Runs
+    every { nonNullClient.startSession() } returns nonNullClientSession
+    mongoConnection = MongoConnection(nonNullClient).also { it.close() }
   }
 
   @Test
