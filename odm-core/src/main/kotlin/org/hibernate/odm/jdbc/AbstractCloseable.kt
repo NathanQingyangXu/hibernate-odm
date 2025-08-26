@@ -31,7 +31,7 @@ internal abstract class AbstractCloseable {
    */
   internal fun ensureNotClosed() {
     if (closed) {
-      throw SQLException("this ${javaClass.simpleName} has been closed already")
+      throw SQLException("this ${javaClass.simpleName} instance has been closed already")
     }
   }
 

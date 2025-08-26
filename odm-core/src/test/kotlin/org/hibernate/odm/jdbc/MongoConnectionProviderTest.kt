@@ -3,13 +3,13 @@ package org.hibernate.odm.jdbc
 import com.mongodb.client.internal.MongoClientImpl
 import java.util.UUID
 import kotlin.test.Test
-import kotlin.test.assertEquals
-import kotlin.test.assertFalse
-import kotlin.test.assertTrue
-import org.hibernate.HibernateException
+import org.assertj.core.api.Assertions.assertThat
+import org.assertj.core.api.Assertions.assertThatThrownBy
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder
 import org.hibernate.cfg.AvailableSettings
 import org.hibernate.cfg.Configuration
+import org.hibernate.cfg.JdbcSettings.CONNECTION_PROVIDER
+import org.hibernate.cfg.JdbcSettings.DIALECT
 import org.hibernate.engine.jdbc.connections.spi.ConnectionProvider
 import org.hibernate.internal.SessionFactoryImpl
 import org.hibernate.odm.cfg.MongoSettings
@@ -17,8 +17,6 @@ import org.hibernate.odm.dialect.MongoDialect
 import org.hibernate.odm.service.MongoClientConfigurator
 import org.hibernate.service.spi.ServiceException
 import org.junit.jupiter.api.assertDoesNotThrow
-import org.junit.jupiter.api.assertInstanceOf
-import org.junit.jupiter.api.assertThrows
 
 class MongoConnectionProviderTest {
 
@@ -35,11 +33,9 @@ class MongoConnectionProviderTest {
 
   @Test
   fun `test MongoUri settings must be present`() {
-    val serviceException =
-        assertThrows<ServiceException> {
-          configurationWithDefaultsProperties().buildSessionFactory()
-        }
-    assertServiceException(serviceException, "'${MongoSettings.MONGODB_URI}' setting is mandatory")
+    assertThatThrownBy({ configurationWithDefaultsProperties().buildSessionFactory() })
+        .isExactlyInstanceOf(ServiceException::class.java)
+        .hasRootCauseMessage("'${MongoSettings.MONGODB_URI}' setting is mandatory")
   }
 
   @Test
@@ -49,10 +45,10 @@ class MongoConnectionProviderTest {
         configurationWithDefaultsProperties().apply {
           setProperty(MongoSettings.MONGODB_URI, connectionStringWithoutDatabase)
         }
-    val serviceException = assertThrows<ServiceException> { configuration.buildSessionFactory() }
-    assertServiceException(
-        serviceException,
-        "database must be present in MongoDB connection string: $connectionStringWithoutDatabase")
+    assertThatThrownBy({ configuration.buildSessionFactory() })
+        .isExactlyInstanceOf(ServiceException::class.java)
+        .hasRootCauseMessage(
+            "database must be present in MongoDB connection string: $connectionStringWithoutDatabase")
   }
 
   @Test
@@ -83,14 +79,14 @@ class MongoConnectionProviderTest {
             as MongoConnectionProvider
 
     val clientSettings = (mongoConnectionProvider.mongoClient as MongoClientImpl).settings
-    assertEquals(applicationName, clientSettings.applicationName)
+    assertThat(clientSettings.applicationName).isEqualTo(applicationName)
   }
 
   @Test
   fun `test MongoDB driver information is passed to the created MongoClient`() {
     val driverInformation = MongoConnectionProvider.fetchMongoDriverInformation()
-    assertFalse(driverInformation.driverNames.isNullOrEmpty())
-    assertFalse(driverInformation.driverVersions.isNullOrEmpty())
+    assertThat(driverInformation.driverNames).isNotEmpty()
+    assertThat(driverInformation.driverVersions).isNotEmpty()
 
     val configuration =
         configurationWithDefaultsProperties().apply {
@@ -108,21 +104,14 @@ class MongoConnectionProviderTest {
     val mongoClient = (mongoConnectionProvider.mongoClient as MongoClientImpl)
 
     // additional info could be added implicitly by driver (e.g. `sync` driver name)
-    assertTrue(
-        mongoClient.mongoDriverInformation.driverNames.containsAll(driverInformation.driverNames))
-    assertTrue(
-        mongoClient.mongoDriverInformation.driverVersions.containsAll(
-            driverInformation.driverVersions))
+    assertThat(mongoClient.mongoDriverInformation.driverNames)
+        .containsAll(driverInformation.driverNames)
+    assertThat(mongoClient.mongoDriverInformation.driverVersions)
+        .containsAll(driverInformation.driverVersions)
   }
 
   fun configurationWithDefaultsProperties(): Configuration =
       Configuration()
-          .setProperty(AvailableSettings.DIALECT, MongoDialect::class.qualifiedName)
-          .setProperty(
-              AvailableSettings.CONNECTION_PROVIDER, MongoConnectionProvider::class.qualifiedName)
-
-  fun assertServiceException(serviceException: ServiceException, expectedRootMessage: String) {
-    val cause = assertInstanceOf<HibernateException>(serviceException.cause)
-    assertEquals(expectedRootMessage, cause.message)
-  }
+          .setProperty(DIALECT, MongoDialect::class.qualifiedName)
+          .setProperty(CONNECTION_PROVIDER, MongoConnectionProvider::class.qualifiedName)
 }

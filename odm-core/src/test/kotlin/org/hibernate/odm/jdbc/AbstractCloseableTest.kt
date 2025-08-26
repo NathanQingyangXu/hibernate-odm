@@ -1,7 +1,7 @@
 package org.hibernate.odm.jdbc
 
 import kotlin.test.Test
-import kotlin.test.assertEquals
+import org.assertj.core.api.Assertions.assertThat
 
 class AbstractCloseableTest {
 
@@ -18,12 +18,12 @@ class AbstractCloseableTest {
     // given
     val testCloseable = TestCloseable()
     testCloseable.close()
-    assertEquals(1, testCloseable.realClosingCount)
+    assertThat(testCloseable.realClosingCount).isEqualTo(1)
 
     // when
     testCloseable.close()
 
     // then
-    assertEquals(1, testCloseable.realClosingCount)
+    assertThat(testCloseable.realClosingCount).isEqualTo(1)
   }
 }

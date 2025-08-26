@@ -9,6 +9,7 @@ kotlin-jvm = "2.2.0"
 detekt = "1.23.8"
 ktfmt = "0.23.0"
 mockk = "1.14.5"
+assertj = "3.27.4"
 
 [libraries]
 hibernate-orm-core = { module = "org.hibernate.orm:hibernate-core", version.ref = "hibernate-orm" }
@@ -20,9 +21,10 @@ logback-classic = { module = "ch.qos.logback:logback-classic", version.ref = "lo
 kotlin-logging = { module = "io.github.oshai:kotlin-logging-jvm", version.ref = "kotlin-logging" }
 kotlin-junit5 = { module = "org.jetbrains.kotlin:kotlin-test-junit5" }
 mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
+assertj = { module = "org.assertj:assertj-core", version.ref = "assertj" }
 
 [bundles]
-test-common = [ "kotlin-junit5", "junit-jupiter-engine", "sl4j-api", "logback-classic", "kotlin-logging" ]
+test-common = [ "kotlin-junit5", "junit-jupiter-engine", "sl4j-api", "logback-classic", "kotlin-logging", "assertj" ]
 
 [plugins]
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin-jvm" }

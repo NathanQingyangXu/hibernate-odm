@@ -9,10 +9,9 @@ import io.mockk.impl.annotations.MockK
 import io.mockk.just
 import java.sql.SQLException
 import kotlin.test.Test
-import kotlin.test.assertEquals
+import org.assertj.core.api.Assertions.assertThatThrownBy
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.assertAll
-import org.junit.jupiter.api.assertThrows
 
 class MongoConnectionTest {
 
@@ -62,9 +61,8 @@ class MongoConnectionTest {
   }
 
   private fun assertSqlException(executable: () -> Unit) {
-    val sqlException = assertThrows<SQLException>(executable)
-    assertEquals(
-        "this ${MongoConnection::class.java.simpleName} has been closed already",
-        sqlException.message)
+    assertThatThrownBy(executable)
+        .isExactlyInstanceOf(SQLException::class.java)
+        .hasMessage("this MongoConnection instance has been closed already")
   }
 }
