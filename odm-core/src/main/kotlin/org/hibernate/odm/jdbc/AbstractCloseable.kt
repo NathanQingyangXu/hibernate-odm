@@ -19,7 +19,7 @@ internal abstract class AbstractCloseable {
         closeActually()
         closed = true
       } catch (e: Exception) {
-        logger.error { "failed to close $this: ${e.message}" }
+        logger.error { "failed to close ${javaClass.simpleName}: ${e.message}" }
         throw e
       }
     }

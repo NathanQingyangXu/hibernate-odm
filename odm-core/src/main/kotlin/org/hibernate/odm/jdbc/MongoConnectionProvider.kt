@@ -95,4 +95,8 @@ internal class MongoConnectionProvider :
   override fun stop() {
     mongoClient?.close()
   }
+
+  fun main() {
+    println("Hello World")
+  }
 }
