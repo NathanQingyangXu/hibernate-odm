@@ -84,7 +84,7 @@ class MongoConnectionProviderTest {
 
   @Test
   fun `test MongoDB driver information is passed to the created MongoClient`() {
-    val driverInformation = MongoConnectionProvider.fetchMongoDriverInformation()
+    val driverInformation = MongoConnectionProvider.getMongoDriverInformation()
     assertThat(driverInformation.driverNames).isNotEmpty()
     assertThat(driverInformation.driverVersions).isNotEmpty()
 

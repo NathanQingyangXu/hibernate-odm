@@ -87,9 +87,15 @@ tasks.withType<Detekt>().configureEach { reports { html.required = true } }
 val mongoDriverName = libs.mongodb.driver.sync.get().name
 val mongoDriverVersion = libs.versions.mongodb.driver.sync.get()
 
+val odmName = rootProject.name
+val odmVersion = version
+
 tasks.processResources {
   filesMatching("mongo_driver.properties") {
     filter<ReplaceTokens>(
         "tokens" to mapOf("driver.name" to mongoDriverName, "driver.version" to mongoDriverVersion))
+  }
+  filesMatching("odm.properties") {
+    filter<ReplaceTokens>("tokens" to mapOf("odm.name" to odmName, "odm.version" to odmVersion))
   }
 }

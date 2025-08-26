@@ -13,6 +13,7 @@ import org.hibernate.HibernateException
 import org.hibernate.engine.jdbc.connections.spi.ConnectionProvider
 import org.hibernate.odm.cfg.MongoSettings
 import org.hibernate.odm.service.MongoClientConfigurator
+import org.hibernate.odm.util.VersionUtil
 import org.hibernate.service.UnknownServiceException
 import org.hibernate.service.spi.Configurable
 import org.hibernate.service.spi.ServiceRegistryAwareService
@@ -25,8 +26,8 @@ internal class MongoConnectionProvider :
   companion object {
     @JvmStatic private val logger = KotlinLogging.logger {}
 
-    fun fetchMongoDriverInformation(): MongoDriverInformation {
-      val classLoader = MongoConnectionProvider::class.java.classLoader
+    fun getMongoDriverInformation(): MongoDriverInformation {
+      val classLoader = VersionUtil::class.java.classLoader
       val driverProperties =
           classLoader.getResourceAsStream("mongo_driver.properties").use {
             Properties().apply { load(it) }
@@ -85,7 +86,7 @@ internal class MongoConnectionProvider :
   }
 
   override fun start() {
-    val mongoDriverInformation = fetchMongoDriverInformation()
+    val mongoDriverInformation = getMongoDriverInformation()
     mongoClient =
         MongoClients.create(clientSettingsBuilder.build(), mongoDriverInformation).also {
           mongoDatabase = it.getDatabase(checkNotNull(mongoDatabaseName))
@@ -94,9 +95,5 @@ internal class MongoConnectionProvider :
 
   override fun stop() {
     mongoClient?.close()
-  }
-
-  fun main() {
-    println("Hello World")
   }
 }
