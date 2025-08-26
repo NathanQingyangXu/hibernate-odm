@@ -48,7 +48,8 @@ internal class MongoConnectionProvider :
 
   private var mongoDatabase: MongoDatabase? = null
 
-  override fun getConnection(): Connection = MongoConnection(checkNotNull(mongoClient))
+  override fun getConnection(): Connection =
+      MongoConnection(checkNotNull(mongoClient).startSession())
 
   override fun closeConnection(conn: Connection) {
     conn.close()

@@ -8,9 +8,6 @@ plugins {
   alias(libs.plugins.kotlin.jvm)
   alias(libs.plugins.detekt)
   alias(libs.plugins.ktfmt)
-
-  // // only post-compile-weaving mode works for Kotlin
-  alias(libs.plugins.freefair.aspectj.post.compile.weaving)
 }
 
 repositories { mavenCentral() }
@@ -56,7 +53,7 @@ tasks.check { dependsOn(integrationTestTask) }
 dependencies {
   testImplementation(libs.bundles.test.common)
   testRuntimeOnly("org.junit.platform:junit-platform-launcher")
-  testImplementation(kotlin("reflect"))
+  testImplementation(libs.mockk)
 
   integrationTestImplementation(libs.bundles.test.common)
   integrationTestRuntimeOnly("org.junit.platform:junit-platform-launcher")
@@ -71,8 +68,6 @@ dependencies {
   implementation(libs.sl4j.api)
   implementation(libs.logback.classic)
   implementation(libs.kotlin.logging)
-
-  implementation(libs.aspectj.runtime)
 }
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
