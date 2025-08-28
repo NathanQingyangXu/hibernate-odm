@@ -2,6 +2,7 @@ package org.hibernate.odm.jdbc
 
 import com.mongodb.client.ClientSession
 import com.mongodb.client.MongoClient
+import io.github.oshai.kotlinlogging.KotlinLogging
 import java.sql.Blob
 import java.sql.CallableStatement
 import java.sql.Clob
@@ -13,9 +14,17 @@ import java.sql.SQLWarning
 import java.sql.SQLXML
 import java.sql.Statement
 import java.sql.Struct
+import org.bson.BsonDocument
+import org.bson.BsonInt32
+import org.hibernate.odm.util.Version
+import org.hibernate.odm.util.VersionUtil
 
 internal class MongoConnection(private var mongoClient: MongoClient) :
     AbstractCloseable(), ConnectionAdapter {
+  companion object {
+    @JvmStatic private val logger = KotlinLogging.logger {}
+  }
+
   private val clientSession: ClientSession = mongoClient.startSession()
 
   override fun closeActually() {
@@ -59,7 +68,36 @@ internal class MongoConnection(private var mongoClient: MongoClient) :
 
   override fun getMetaData(): DatabaseMetaData {
     ensureNotClosed()
-    TODO()
+    return doGetMetadata()
+  }
+
+  @Suppress("TooGenericExceptionCaught")
+  private fun doGetMetadata(): DatabaseMetaData {
+    val odmVersion = VersionUtil.getOdmVersion()
+    logger.debug { "Got odm version: $odmVersion" }
+    try {
+      val adminDatabase = mongoClient.getDatabase("admin")
+
+      logger.debug { "Start running 'buildInfo' command on 'admin' database..." }
+      val buildInfo = adminDatabase.runCommand(BsonDocument("buildInfo", BsonInt32(1)))
+      val versionText = buildInfo.getString("version")
+      logger.debug { "Done. Got MongoDB version: $versionText" }
+      val versions: List<Int> =
+          buildInfo.getList("versionArray", Integer::class.java).map { it.toInt() }
+
+      assert(
+          versions.size >= 2,
+          { "Unexpected versionArray [$versions] array field length (should be 2 or more)" })
+
+      val mongoVersion = Version(versions[0], versions[1], versionText)
+      logger.info { "Got mongo version: $mongoVersion" }
+
+      return MongoDatabaseMetadata(
+          connection = this, mongoVersion = mongoVersion, odmVersion = odmVersion)
+    } catch (exception: Exception) {
+      logger.error { "Failed to get database metadata: ${exception.message}" }
+      throw exception
+    }
   }
 
   override fun setTransactionIsolation(level: Int) {
