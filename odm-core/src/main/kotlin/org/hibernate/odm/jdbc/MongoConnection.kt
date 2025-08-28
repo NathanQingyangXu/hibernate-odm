@@ -25,10 +25,15 @@ internal class MongoConnection(private var mongoClient: MongoClient) :
     @JvmStatic private val logger = KotlinLogging.logger {}
   }
 
-  private val clientSession: ClientSession = mongoClient.startSession()
+  private var clientSessionInitialized: Boolean = false
+  private val clientSession: ClientSession by lazy {
+    mongoClient.startSession().also { clientSessionInitialized = true }
+  }
 
   override fun closeActually() {
-    clientSession.close()
+    if (clientSessionInitialized) {
+      clientSession.close()
+    }
   }
 
   override fun createStatement(): Statement {
