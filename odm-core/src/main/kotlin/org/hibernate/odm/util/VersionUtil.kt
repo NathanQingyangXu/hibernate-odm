@@ -20,13 +20,4 @@ internal object VersionUtil {
     val versionMinor = properties.getProperty(ODM_VERSION_MINOR_PROPERTY)?.toInt()
     return Version(versionMajor ?: 0, versionMinor ?: 0, versionText)
   }
-
-  fun parseVersions(versionText: String): Version {
-    val versionTextParts = versionText.split(".", "-")
-    assert(
-        versionTextParts.size >= 2,
-        { "'$versionText' should contain both major and minor versions" })
-    val versions = versionTextParts.subList(0, 2).map { Integer.parseInt(it) }
-    return Version(major = versions.first(), minor = versions.last(), text = versionText)
-  }
 }
