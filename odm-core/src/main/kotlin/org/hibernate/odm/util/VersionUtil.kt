@@ -6,6 +6,8 @@ internal object VersionUtil {
 
   const val ODM_PROPERTIES_RESOURCE_PATH = "odm.properties"
   const val ODM_VERSION_PROPERTY = "version"
+  const val ODM_VERSION_MAJOR_PROPERTY = "version.major"
+  const val ODM_VERSION_MINOR_PROPERTY = "version.minor"
 
   fun getOdmVersion(): Version {
     val classLoader = VersionUtil::class.java.classLoader
@@ -13,8 +15,10 @@ internal object VersionUtil {
         classLoader.getResourceAsStream(ODM_PROPERTIES_RESOURCE_PATH).use {
           Properties().apply { load(it) }
         }
-    val versionText = properties.getProperty(ODM_VERSION_PROPERTY)
-    return parseVersions(versionText)
+    val versionText = properties.getProperty(ODM_VERSION_PROPERTY) as String
+    val versionMajor = properties.getProperty(ODM_VERSION_MAJOR_PROPERTY)?.toInt()
+    val versionMinor = properties.getProperty(ODM_VERSION_MINOR_PROPERTY)?.toInt()
+    return Version(versionMajor ?: 0, versionMinor ?: 0, versionText)
   }
 
   fun parseVersions(versionText: String): Version {

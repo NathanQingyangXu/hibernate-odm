@@ -9,4 +9,6 @@ internal object MongoConstants {
 
   const val MONGO_DBMS_NAME = "MongoDB"
   const val MONGO_JDBC_DRIVER_NAME = "JDBC Adapter"
+
+  const val MINIMUM_SUPPORTED_MONGO_VERSION = 6
 }

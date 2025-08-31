@@ -88,7 +88,9 @@ val mongoDriverName = libs.mongodb.driver.sync.get().name
 val mongoDriverVersion = libs.versions.mongodb.driver.sync.get()
 
 val odmName = rootProject.name
-val odmVersion = version
+val odmVersion = version as String
+
+val (odmVersionMajor, odmVersionMinor) = odmVersion.split(".")
 
 tasks.processResources {
   filesMatching("mongo_driver.properties") {
@@ -96,6 +98,12 @@ tasks.processResources {
         "tokens" to mapOf("driver.name" to mongoDriverName, "driver.version" to mongoDriverVersion))
   }
   filesMatching("odm.properties") {
-    filter<ReplaceTokens>("tokens" to mapOf("odm.name" to odmName, "odm.version" to odmVersion))
+    filter<ReplaceTokens>(
+        "tokens" to
+            mapOf(
+                "odm.name" to odmName,
+                "odm.version" to odmVersion,
+                "odm.version.major" to odmVersionMajor,
+                "odm.version.minor" to odmVersionMinor))
   }
 }
