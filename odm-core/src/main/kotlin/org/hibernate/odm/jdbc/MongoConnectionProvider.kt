@@ -12,7 +12,7 @@ import java.util.Properties
 import org.hibernate.HibernateException
 import org.hibernate.engine.jdbc.connections.spi.ConnectionProvider
 import org.hibernate.odm.cfg.MongoSettings
-import org.hibernate.odm.service.MongoClientConfigurator
+import org.hibernate.odm.spi.MongoClientConfigurer
 import org.hibernate.odm.util.VersionUtil
 import org.hibernate.service.UnknownServiceException
 import org.hibernate.service.spi.Configurable
@@ -75,13 +75,13 @@ internal class MongoConnectionProvider :
 
   override fun injectServices(serviceRegistry: ServiceRegistryImplementor) {
     try {
-      serviceRegistry.getService(MongoClientConfigurator::class.java)?.apply {
-        logger.info { "${MongoClientConfigurator::class.simpleName} service found" }
+      serviceRegistry.getService(MongoClientConfigurer::class.java)?.apply {
+        logger.info { "${MongoClientConfigurer::class.simpleName} service found" }
         config(clientSettingsBuilder)
-        logger.info { "${MongoClientConfigurator::class.simpleName} service applied" }
+        logger.info { "${MongoClientConfigurer::class.simpleName} service applied" }
       }
     } catch (_: UnknownServiceException) {
-      logger.debug { "No ${MongoClientConfigurator::class.simpleName} service found" }
+      logger.debug { "No ${MongoClientConfigurer::class.simpleName} service found" }
     }
   }
 

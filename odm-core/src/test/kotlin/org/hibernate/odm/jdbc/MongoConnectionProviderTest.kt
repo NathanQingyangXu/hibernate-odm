@@ -14,7 +14,7 @@ import org.hibernate.engine.jdbc.connections.spi.ConnectionProvider
 import org.hibernate.internal.SessionFactoryImpl
 import org.hibernate.odm.cfg.MongoSettings
 import org.hibernate.odm.dialect.MongoDialect
-import org.hibernate.odm.service.MongoClientConfigurator
+import org.hibernate.odm.spi.MongoClientConfigurer
 import org.hibernate.service.spi.ServiceException
 import org.junit.jupiter.api.assertDoesNotThrow
 
@@ -61,14 +61,12 @@ class MongoConnectionProviderTest {
         }
 
     val applicationName = UUID.randomUUID().toString()
-    val applicationNameConfigurator = MongoClientConfigurator {
-      it.applicationName(applicationName)
-    }
+    val applicationNameConfigurator = MongoClientConfigurer { it.applicationName(applicationName) }
 
     val serviceRegistry =
         StandardServiceRegistryBuilder()
             .applySettings(configuration.properties)
-            .addService(MongoClientConfigurator::class.java, applicationNameConfigurator)
+            .addService(MongoClientConfigurer::class.java, applicationNameConfigurator)
             .build()
 
     val sessionFactoryImpl = assertDoesNotThrow {
